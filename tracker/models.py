@@ -1,30 +1,36 @@
-# Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-    TYPE_CHOICES = [('income', 'Income'), ('expense', 'Expense')]
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
 
-    def __str__(self):
-        return f"{self.name} ({self.type})"
+CATEGORY_CHOICES = (
+    ('Food', 'Food'),
+    ('Transport', 'Transport'),
+    ('Shopping', 'Shopping'),
+    ('Entertainment', 'Entertainment'),
+    ('Bills', 'Bills'),
+    ('Other', 'Other'),
+)
+
 
 class Income(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.FloatField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     source = models.CharField(max_length=100)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.source} - ₹{self.amount}"
 
+
 class Expense(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    amount = models.FloatField()
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=100)
     description = models.TextField(blank=True)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.category} - ₹{self.amount}"

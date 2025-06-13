@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | Finance Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{% static 'css/login.css' %}" rel="stylesheet">
+    <script src="{% static 'js/password_toggle.js' %}"></script>
+
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #4CAF50, #81C784);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        .login-btn {
+            background: linear-gradient(135deg, #388E3C, #66BB6A);
+            border: none;
+        }
+        .login-btn:hover {
+            background: linear-gradient(135deg, #2E7D32, #4CAF50);
+        }
+        .form-control {
+            border-radius: 8px;
+        }
+        h2 {
+            color: #388E3C;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="login-container">
+        <h2>💰 Finance Tracker</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="id_username" class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" id="id_username" required>
+            </div>
+            <div class="mb-3">
+                <label for="id_email" class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" id="id_email" required>
+            </div>
+            <div class="mb-3">
+    <label for="id_password1" class="form-label">Password</label>
+    <div class="input-group">
+        <input type="password" name="password1" class="form-control" id="id_password1" required>
+        <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('id_password1', this)">
+            <i class="bi bi-eye"></i>
+        </button>
+    </div>
+</div>
+
+            <div class="mb-3">
+    <label for="id_password2" class="form-label">Confirm Password</label>
+    <div class="input-group">
+        <input type="password" name="password2" class="form-control" id="id_password2" required>
+        <button class="btn btn-outline-secondary toggle-password" type="button" onclick="togglePassword('id_password2', this)">
+            <i class="bi bi-eye"></i>
+        </button>
+    </div>
+</div>
+
+
+            <button type="submit" class="btn login-btn w-100 text-white">Register</button>
+        </form>
+
+        <a class="signup-link mt-3 d-block" href="{% url 'login' %}">Already have an account? Login here.</a>
+        
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
