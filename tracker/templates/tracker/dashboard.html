@@ -2,7 +2,7 @@
 {% load static %} 
 
 
-{% block content %}
+{% comment %} {% block content %}
 <div class="container mt-4">
     <h2 class="text-success">Dashboard</h2>
 
@@ -66,4 +66,145 @@
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}  {% endcomment %} 
+
+
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-success text-center mb-4">Dashboard</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4 text-center">
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Total Income</h5>
+                    <h4>₹{{ total_income }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5>Total Expense</h5>
+                    <h4>₹{{ total_expense }}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <h5>Balance</h5>
+                    <h4>₹{{ balance }}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Income Section -->
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Incomes</h4>
+            <a href="{% url 'add_income' %}" class="btn btn-sm btn-success mb-2">Add Income</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Source</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for income in incomes %}
+                    <tr>
+                        <td>₹{{ income.amount }}</td>
+                        <td>{{ income.source }}</td>
+                        <td>{{ income.date }}</td>
+                        <td>
+                            <a href="{% url 'edit_income' income.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_income' income.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Expense Section -->
+        <div class="col-md-6">
+            <h4>Expenses</h4>
+            <a href="{% url 'add_expense' %}" class="btn btn-sm btn-success mb-2">Add Expense</a>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>₹{{ expense.amount }}</td>
+                        <td>{{ expense.category }}</td>
+                        <td>{{ expense.date }}</td>
+                        <td>
+                            <a href="{% url 'edit_expense' expense.pk %}" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="{% url 'delete_expense' expense.pk %}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <h5 class="text-success">Category-wise Expenses</h5>
+            <canvas id="pieChart"></canvas>
+        </div>
+        <div class="col-md-6">
+            <h5 class="text-success">Monthly Expenses</h5>
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const pieChart = new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+            labels: {{ category_labels|safe }},
+            datasets: [{
+                label: 'Expenses by Category',
+                data: {{ category_data|safe }},
+                backgroundColor: ['#4CAF50', '#81C784', '#C8E6C9', '#2E7D32', '#A5D6A7']
+            }]
+        }
+    });
+
+    const lineChart = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: {{ monthly_labels|safe }},
+            datasets: [{
+                label: 'Monthly Expenses',
+                data: {{ monthly_data|safe }},
+                borderColor: '#388E3C',
+                backgroundColor: '#C8E6C9',
+                fill: true,
+                tension: 0.4
+            }]
+        }
+    });
+</script>
+{% endblock %}

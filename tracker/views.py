@@ -7,13 +7,55 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import CustomRegisterForm
+from django.db.models import Sum
+import calendar
+from django.http import JsonResponse
+from django.db.models.functions import ExtractMonth
+
 
 @login_required
 def dashboard(request):
     incomes = Income.objects.filter(user=request.user).order_by('-date')
     expenses = Expense.objects.filter(user=request.user).order_by('-date')
-    return render(request, 'tracker/dashboard.html', {'incomes': incomes, 'expenses': expenses})
-    # return render(request, 'tracker/dashboard.html')
+
+    total_income = incomes.aggregate(total=Sum('amount'))['total'] or 0
+    total_expense = expenses.aggregate(total=Sum('amount'))['total'] or 0
+    balance = total_income - total_expense
+
+    # --- Category-wise Expense Data ---
+    category_data = (
+        expenses.values('category')
+        .annotate(total=Sum('amount'))
+        .order_by('-total')
+    )
+
+    category_labels = [item['category'] for item in category_data]
+    category_totals = [item['total'] for item in category_data]
+
+    # --- Monthly Expense Data ---
+    monthly_data = (
+        expenses.annotate(month=ExtractMonth('date'))
+        .values('month')
+        .annotate(total=Sum('amount'))
+        .order_by('month')
+    )
+
+    monthly_labels = [calendar.month_name[item['month']] for item in monthly_data]
+    monthly_totals = [item['total'] for item in monthly_data]
+
+    context = {
+        'incomes': incomes,
+        'expenses': expenses,
+        'total_income': total_income,
+        'total_expense': total_expense,
+        'balance': balance,
+        'category_labels': category_labels,
+        'category_data': category_totals,
+        'monthly_labels': monthly_labels,
+        'monthly_data': monthly_totals,
+    }
+    return render(request, 'tracker/dashboard.html', context)
+
 
 def register_view(request):
     if request.method == 'POST':
@@ -103,3 +145,4 @@ def delete_expense(request, pk):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
