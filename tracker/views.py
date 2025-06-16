@@ -11,7 +11,9 @@ from django.db.models import Sum
 import calendar
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
-
+import json
+from django.db.models.functions import TruncMonth
+from collections import OrderedDict
 
 @login_required
 def dashboard(request):
@@ -22,26 +24,24 @@ def dashboard(request):
     total_expense = expenses.aggregate(total=Sum('amount'))['total'] or 0
     balance = total_income - total_expense
 
-    # --- Category-wise Expense Data ---
-    category_data = (
+    # --- Pie Chart: Category-wise Expense Data ---
+    category_summary = (
         expenses.values('category')
         .annotate(total=Sum('amount'))
         .order_by('-total')
     )
+    category_labels = [item['category'] for item in category_summary]
+    category_totals = [float(item['total']) for item in category_summary]
 
-    category_labels = [item['category'] for item in category_data]
-    category_totals = [item['total'] for item in category_data]
-
-    # --- Monthly Expense Data ---
-    monthly_data = (
-        expenses.annotate(month=ExtractMonth('date'))
+    # --- Line Chart: Monthly Expense Data ---
+    monthly_summary = (
+        expenses.annotate(month=TruncMonth('date'))
         .values('month')
         .annotate(total=Sum('amount'))
         .order_by('month')
     )
-
-    monthly_labels = [calendar.month_name[item['month']] for item in monthly_data]
-    monthly_totals = [item['total'] for item in monthly_data]
+    monthly_labels = [item['month'].strftime('%B %Y') for item in monthly_summary]
+    monthly_totals = [float(item['total']) for item in monthly_summary]
 
     context = {
         'incomes': incomes,
@@ -49,10 +49,10 @@ def dashboard(request):
         'total_income': total_income,
         'total_expense': total_expense,
         'balance': balance,
-        'category_labels': category_labels,
-        'category_data': category_totals,
-        'monthly_labels': monthly_labels,
-        'monthly_data': monthly_totals,
+        'category_labels': json.dumps(category_labels),
+        'category_data': json.dumps(category_totals),
+        'monthly_labels': json.dumps(monthly_labels),
+        'monthly_data': json.dumps(monthly_totals),
     }
     return render(request, 'tracker/dashboard.html', context)
 
