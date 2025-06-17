@@ -92,6 +92,31 @@
             </table>
         </div>
     </div>
+    
+    <!--set budget-->
+    <div class="text-center mb-4">
+    <a href="{% url 'set_budget' %}" 
+       class="btn btn-lg btn-warning fw-bold px-5 py-2 shadow-sm" 
+       style="border-radius: 30px; font-size: 1.1rem;">
+        🧾 Set / Update Budget
+    </a>
+</div>
+
+
+    <!--monthly alert-->
+
+{% if budget %}
+  <div class="alert alert-info">
+    💸 Monthly Budget: ₹{{ budget.monthly_limit }}
+  </div>
+{% endif %}
+
+{% if overspent %}
+  <div class="alert alert-danger d-flex align-items-center justify-content-center fw-bold shadow-sm" role="alert" style="font-size: 1rem;">
+    ⚠️ Alert: You’ve exceeded your monthly budget!
+  </div>
+{% endif %}
+
 
     <!-- Charts Section -->
     <div class="row mt-5">

@@ -8,21 +8,29 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 from .forms import CustomRegisterForm
 from django.db.models import Sum
-import calendar
+import calendar, csv
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
 import json
 from django.db.models.functions import TruncMonth
 from collections import OrderedDict
+from .models import Budget
+from django.http import HttpResponse
 
 @login_required
 def dashboard(request):
     incomes = Income.objects.filter(user=request.user).order_by('-date')
     expenses = Expense.objects.filter(user=request.user).order_by('-date')
-
     total_income = incomes.aggregate(total=Sum('amount'))['total'] or 0
     total_expense = expenses.aggregate(total=Sum('amount'))['total'] or 0
     balance = total_income - total_expense
+    budget = None
+    overspent = False
+
+    if request.user.is_authenticated:
+        budget = Budget.objects.filter(user=request.user).first()
+        if budget and total_expense > budget.monthly_limit:
+            overspent = True
 
     # --- Pie Chart: Category-wise Expense Data ---
     category_summary = (
@@ -53,6 +61,9 @@ def dashboard(request):
         'category_data': json.dumps(category_totals),
         'monthly_labels': json.dumps(monthly_labels),
         'monthly_data': json.dumps(monthly_totals),
+        'budget': budget,
+        'overspent': overspent,
+
     }
     return render(request, 'tracker/dashboard.html', context)
 
@@ -83,6 +94,8 @@ def add_income(request):
     else:
         form = IncomeForm()
     return render(request, 'tracker/add_income.html', {'form': form})
+
+from django.contrib import messages
 
 @login_required
 def add_expense(request):
@@ -146,3 +159,27 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
+def set_budget(request):
+    budget, created = Budget.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        amount = request.POST.get('monthly_limit')
+        budget.monthly_limit = amount
+        budget.save()
+        messages.success(request, "Budget updated.")
+        return redirect('dashboard')
+    return render(request, 'tracker/set_budget.html', {'budget': budget})
+
+
+def download_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=expenses.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(['Amount', 'Category', 'Description', 'Date'])
+
+    expenses = Expense.objects.filter(user=request.user)
+    for expense in expenses:
+        writer.writerow([expense.amount, expense.category, expense.description, expense.date])
+
+    return response

@@ -18,7 +18,7 @@ class IncomeForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'amount': forms.NumberInput(attrs={'class': 'form-control'}),
-            'source': forms.TextInput(attrs={'class': 'form-control'}),
+            'source': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class ExpenseForm(forms.ModelForm):

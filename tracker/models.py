@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from django.conf import settings
 
 
 CATEGORY_CHOICES = (
@@ -9,6 +10,11 @@ CATEGORY_CHOICES = (
     ('Shopping', 'Shopping'),
     ('Entertainment', 'Entertainment'),
     ('Bills', 'Bills'),
+    ('Other', 'Other'),
+    ('Salary', 'Salary'),
+    ('Freelance', 'Freelance'),
+    ('Investment', 'Investment'),
+    ('Gift', 'Gift'),
     ('Other', 'Other'),
 )
 
@@ -34,3 +40,10 @@ class Expense(models.Model):
 
     def __str__(self):
         return f"{self.category} - ₹{self.amount}"
+
+class Budget(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    monthly_limit = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.user.username} - ₹{self.monthly_limit}"
