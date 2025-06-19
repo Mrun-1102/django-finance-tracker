@@ -75,8 +75,15 @@ WSGI_APPLICATION = 'finance_tracker.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'finance_db',
+        'USER': 'root',
+        'PASSWORD': 'imfrom#MH30',
+        'HOST': '127.0.0.1',  # e.g., 'localhost' or '127.0.0.1' or an external DB like PlanetScale
+        'PORT': '3306',          # default MySQL port
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

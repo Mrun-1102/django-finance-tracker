@@ -20,7 +20,6 @@ urlpatterns = [
     path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     path('set-budget/', views.set_budget, name='set_budget'),
     path('download-csv/', views.download_csv, name='download_csv'),
-
     # path('dashboard/category-data/', expense_category_data, name='expense_category_data'),
     # path('dashboard/monthly-data/', monthly_expense_data, name='monthly_expense_data'),
 
