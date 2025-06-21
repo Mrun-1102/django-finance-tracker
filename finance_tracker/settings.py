@@ -54,18 +54,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finance_tracker.wsgi.application'
 
+print("Resolved CA path:", BASE_DIR / 'certs' / 'ca.pem')
+print("Exists:", (BASE_DIR / 'certs' / 'ca.pem').exists())
+
+
 # ✅ Secure TiDB connection using CA cert
 DATABASES = {
     'default': dj_database_url.parse(
         os.getenv("DATABASE_URL"),
         engine='django.db.backends.mysql',
-        conn_max_age=600,
-        ssl={
-            'ca': str(BASE_DIR / 'certs' / 'ca.pem')
-        }
+        conn_max_age=600
     )
 }
-
+DATABASES['default']['OPTIONS'] = {
+    'ssl': {
+        'ca': str(BASE_DIR / 'certs' / 'ca.pem')
+    }
+}
 
 
 AUTH_PASSWORD_VALIDATORS = [
