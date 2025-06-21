@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-73wmh4=2*lo)5hz3ls!*%#oo6$x%q40pn)f5#6!9g1oxr_6j$v'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -48,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'finance_tracker.urls'
@@ -74,17 +79,8 @@ WSGI_APPLICATION = 'finance_tracker.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'finance_db',
-        'USER': 'root',
-        'PASSWORD': 'imfrom#MH30',
-        'HOST': '127.0.0.1',  # e.g., 'localhost' or '127.0.0.1' or an external DB like PlanetScale
-        'PORT': '3306',          # default MySQL port
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
+    'default': dj_database_url.parse(os.getenv("mysql://FAfKa3NgefGeQga.root:<PASSWORD>@gateway01.us-west-2.prod.aws.tidbcloud.com:4000/test"))
+    
 }
 
 
