@@ -1,0 +1,20 @@
+body {
+    background: linear-gradient(135deg, #a8e063, #56ab2f); /* Green theme */
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.login-box {
+    width: 350px;
+    background-color: #fff;
+}
+
+input::placeholder {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+button.btn-success {
+    background-color: #28a745;
+    border-radius: 25px;
+}
+

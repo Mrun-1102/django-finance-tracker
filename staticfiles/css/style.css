@@ -1,0 +1,128 @@
+
+body {
+    background-color: #e9f5ec;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Headings */
+
+h2 {
+    color: #000000;
+}
+h4, h5 {
+    color: #000000;
+}
+
+/* Navbar Buttons */
+.navbar .btn-outline-light {
+    border-radius: 20px;
+    padding: 5px 15px;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+.navbar .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #2E7D32;
+}
+
+
+/* Summary Cards */
+.card {
+    border-radius: 15px;
+    padding: 20px;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+.bg-success {
+    background-color: #43A047 !important;
+}
+.bg-danger {
+    background-color: #E53935 !important;
+}
+.bg-dark {
+    background-color: #1B5E20 !important;
+}
+
+/* Tables */
+.table {
+    background: #fff;
+    border-radius: 10px;
+}
+th {
+    background-color: #f1f1f1;
+    color: #1B5E20;
+}
+td, th {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Buttons */
+.btn-warning {
+    border-radius: 25px;
+    font-weight: 500;
+}
+.btn-danger {
+    border-radius: 25px;
+    font-weight: 500;
+}
+.btn-success {
+    border-radius: 25px;
+    font-weight: 500;
+}
+.btn-outline-info {
+    border-radius: 25px;
+    font-weight: 500;
+}
+
+/* Chart Container Fixes */
+canvas {
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    padding: 10px;
+}
+/* Summary Cards */
+.card-summary {
+    color: white;
+}
+
+.card-summary.income {
+    background-color: #28a745; /* Bootstrap 'success' */
+}
+
+.card-summary.expense {
+    background-color: #E53935; /* Bootstrap 'danger' */
+}
+
+.card-summary.balance {
+    background-color: #ffc720; /* Bootstrap 'dark' */
+}
+
+/* Budget Button */
+.budget-button {
+    border-radius: 30px;
+    font-size: 1.1rem;
+    padding: 0.5rem 2rem;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Overspent Alert */
+.alert-overspent {
+    font-size: 1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    max-width: 400px;
+    margin: auto;
+}
