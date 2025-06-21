@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'finance_tracker.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.parse(os.getenv("mysql://FAfKa3NgefGeQga.root:Mrun%402001@gateway01.us-west-2.prod.aws.tidbcloud.com:4000/test?ssl=true"))
+    'default': dj_database_url.parse(os.getenv("DATABASE_URL"))
     
 }
 
