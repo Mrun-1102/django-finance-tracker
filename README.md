@@ -79,6 +79,15 @@ http://127.0.0.1:8000/
 
 
 ## Screenshots
+![register page](https://github.com/user-attachments/assets/2944aa79-043e-41b5-9fa3-0101d99f8c38)
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Login page](https://github.com/user-attachments/assets/9cbe4033-8df3-46c0-8897-b35919f0d03f)
+
+![dashboard](https://github.com/user-attachments/assets/1681781d-7759-49ae-8f11-959742a8fdfe)
+
+![income](https://github.com/user-attachments/assets/b8fa90ee-c3d4-4d12-b0b0-1e63e0bd597e)
+
+![expense page](https://github.com/user-attachments/assets/1aa44b32-1fc6-41c5-8c35-13c4c403e9ed)
+
+![visualizations](https://github.com/user-attachments/assets/cf8a3f27-a16b-40a9-a8c8-f3815060d9cb)
 
