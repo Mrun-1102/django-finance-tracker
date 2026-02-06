@@ -4,7 +4,7 @@ A powerful, full-stack personal finance application built with Django, TiDB, and
 
 ## 📸 Dashboard Preview
 
-![AI Finance Assistant Dashboard](docs/images/dashboard_preview.png)
+![AI Finance Assistant Dashboard]
 
 ## 🚀 Features
 
