@@ -85,6 +85,8 @@ A powerful, full-stack personal finance application built with Django, TiDB, and
 ### Visualizations
 ![Charts](https://github.com/user-attachments/assets/cf8a3f27-a16b-40a9-a8c8-f3815060d9cb)
 
+### AI Finance Assistant
+![AI Assistant](https://github.com/user-attachments/assets/b4688a81-4efb-4ca0-94ba-a61a9c01625c) 
 ---
 
 ## 📊 Documentation
